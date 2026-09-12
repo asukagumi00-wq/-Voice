@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050a1c" />
+  <title>Tools Voice â€” by hana</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main>
+    <div class="top-space"></div>
+    <section class="hero container">
+      <div class="orb"><span>â™«</span></div>
+      <div class="eyebrow">Audio Processing Workspace</div>
+      <h1>TOOLS VOICE</h1>
+      <div class="by">by hana</div>
+      <p>Mastering musik, bersihkan vokal, dan pisahkan vocal dari instrumental dalam satu workspace.</p>
+    </section>
+
+    <section class="workspace container">
+      <div class="tool-nav">
+        <button class="tool-tab active" data-tool="mastering">Mastering</button>
+        <button class="tool-tab" data-tool="clean">Clean Voice</button>
+        <button class="tool-tab" data-tool="split">Split Audio</button>
+      </div>
+
+      <section class="studio active" id="masteringStudio">
+        <div class="studio-head"><h2>VC MASTERING</h2></div>
+        <div class="studio-body">
+          <div class="upload">
+            <div class="upload-icon">â™«</div>
+            <div class="file-info">
+              <b id="masterFileName">Belum ada audio dipilih</b>
+              <span id="masterFileMeta">MP3, WAV, FLAC, M4A, AAC, OGG, OPUS, AMR, WMA, AIFF, AC3, WEBM, CAF</span>
+            </div>
+            <label class="upload-label" for="masterFile">Upload Audio</label>
+            <input id="masterFile" type="file" accept="audio/*,.webm,.caf" />
+          </div>
+
+          <div class="player" id="player">
+            <div class="player-top">
+              <button class="play" id="playButton">â–¶</button>
+              <span class="time" id="time">00:00 / 00:00</span>
+              <input class="seek" id="seek" type="range" min="0" max="100" value="0" step="0.1" />
+              <input class="preview-vol" id="previewVolume" type="range" min="0" max="1" value="0.8" step="0.01" />
+            </div>
+            <div class="player-foot">
+              <span class="preview-badge"><i></i> Preview realtime aktif</span>
+              <button class="reset-preview" id="resetPreview">Reset Preview</button>
+            </div>
+          </div>
+
+          <div class="mode-switch">
+            <button class="mode-btn active" data-mode="preset">Preset Mastering</button>
+            <button class="mode-btn" data-mode="manual">Manual Mastering</button>
+          </div>
+
+          <div class="mode-panel active" id="presetPanel">
+            <div class="label-row"><h3>PILIH PRESET</h3><span id="selectedText">Belum ada preset dipilih</span></div>
+            <div class="presets" id="presets"></div>
+          </div>
+
+          <div class="mode-panel" id="manualPanel">
+            <div class="label-row"><h3>MANUAL MASTERING</h3><span>Preview berubah saat audio diputar</span></div>
+            <div class="manual-intro">Atur warna suara saat musik diputar. Ini adalah preview realtime; hasil akhir dari backend dapat sedikit berbeda.</div>
+            <div class="manual-grid">
+              <div class="control"><label>Bass <output id="bassOut">0 dB</output></label><input id="bass" type="range" min="-12" max="12" value="0" step="1" /><small>Frekuensi rendah / low-end</small></div>
+              <div class="control"><label>Mid <output id="midOut">0 dB</output></label><input id="mid" type="range" min="-12" max="12" value="0" step="1" /><small>Kejelasan vokal dan instrumen</small></div>
+              <div class="control"><label>Treble <output id="trebleOut">0 dB</output></label><input id="treble" type="range" min="-12" max="12" value="0" step="1" /><small>Frekuensi tinggi dan detail</small></div>
+              <div class="control"><label>Compression <output id="compressionOut">35%</output></label><input id="compression" type="range" min="0" max="100" value="35" step="5" /><small>Meratakan dinamika audio</small></div>
+              <div class="control"><label>Clarity <output id="clarityOut">20%</output></label><input id="clarity" type="range" min="0" max="100" value="20" step="5" /><small>Tambahan presence / kejernihan</small></div>
+              <div class="control"><label>Reverb <output id="reverbOut">0%</output></label><input id="reverb" type="range" min="0" max="100" value="0" step="5" /><small>Pengaturan hasil backend</small></div>
+              <div class="control"><label>Target Loudness <output id="loudnessOut">-14 LUFS</output></label><input id="loudness" type="range" min="-18" max="-8" value="-14" step="1" /><small>Level target hasil akhir</small></div>
+              <div class="control"><label>True Peak <output id="peakOut">-1.2 dB</output></label><input id="peak" type="range" min="-3" max="-0.5" value="-1.2" step="0.1" /><small>Batas puncak hasil akhir</small></div>
+              <div class="control"><label>Stereo Width <output id="manualWidthOut">100%</output></label><input id="manualWidth" type="range" min="50" max="150" value="100" step="5" /><small>Digunakan backend saat export</small></div>
+              <div class="control wide"><label>Output Format</label><select id="outputFormat"><option value="wav">WAV â€” PCM 16-bit / 48 kHz</option><option value="mp3">MP3 â€” 320 kbps</option></select></div>
+            </div>
+            <div class="manual-summary" id="manualSummary">Preview: Bass 0 dB Â· Mid 0 dB Â· Treble 0 dB Â· Compression 35%</div>
+          </div>
+
+          <div class="label-row"><h3>PENGATURAN OUTPUT</h3><span>Digunakan di semua mode</span></div>
+          <div class="settings">
+            <div class="setting"><label>Intensity <output id="intensityOutput">100%</output></label><input id="intensity" type="range" min="50" max="130" value="100" step="5" /></div>
+            <div class="setting"><label>Output Volume <output id="volumeOutput">0 dB</output></label><input id="volume" type="range" min="-6" max="6" value="0" step="1" /></div>
+            <div class="setting"><label>Fade In/Out <output id="fadeOutput">0 ms</output></label><input id="fade" type="range" min="0" max="2000" value="0" step="100" /></div>
+          </div>
+          <button class="submit" id="masterButton" disabled>Mulai Mastering</button>
+        </div>
+      </section>
+
+      <section class="studio" id="cleanStudio">
+        <div class="studio-head"><h2>CLEAN VOICE</h2></div>
+        <div class="studio-body">
+          <div class="upload"><div class="upload-icon">â—Œ</div><div class="file-info"><b id="cleanFileName">Belum ada audio dipilih</b><span id="cleanFileMeta">Upload rekaman vocal atau audio dengan noise</span></div><label class="upload-label" for="cleanFile">Upload Audio</label><input id="cleanFile" type="file" accept="audio/*,.webm,.caf" /></div>
+          <div class="info-box">Clean Voice dirancang untuk membersihkan noise, hum, hiss, dan suara latar agar vocal menjadi lebih fokus sebagai main vocal.</div>
+          <div class="label-row"><h3>TINGKAT PEMBERSIHAN</h3><span id="cleanStrengthText">Light</span></div>
+          <div class="options">
+            <button class="option active" data-clean="light"><strong>Light</strong><span>Perubahan halus</span></button>
+            <button class="option" data-clean="balanced"><strong>Balanced</strong><span>Seimbang untuk vocal</span></button>
+            <button class="option" data-clean="strong"><strong>Strong</strong><span>Noise lebih agresif</span></button>
+            <button class="option" data-clean="main-vocal"><strong>Main Vocal</strong><span>Fokus vocal utama</span></button>
+          </div>
+          <div class="manual-grid"><div class="control"><label>Noise Reduction <output id="noiseOut">60%</output></label><input id="noise" type="range" min="0" max="100" value="60" step="5" /></div><div class="control"><label>Voice Clarity <output id="voiceClarityOut">50%</output></label><input id="voiceClarity" type="range" min="0" max="100" value="50" step="5" /></div></div>
+          <button class="submit" id="cleanButton" disabled>Mulai Clean Voice</button>
+        </div>
+      </section>
+
+      <section class="studio" id="splitStudio">
+        <div class="studio-head"><h2>SPLIT AUDIO</h2></div>
+        <div class="studio-body">
+          <div class="upload"><div class="upload-icon">âœ¦</div><div class="file-info"><b id="splitFileName">Belum ada audio dipilih</b><span id="splitFileMeta">Upload lagu untuk dipisahkan menjadi vocal dan instrumental</span></div><label class="upload-label" for="splitFile">Upload Audio</label><input id="splitFile" type="file" accept="audio/*,.webm,.caf" /></div>
+          <div class="info-box">Pilih hasil yang ingin dibuat dari audio. Backend akan memisahkan stem menggunakan engine pemisah audio.</div>
+          <div class="label-row"><h3>PILIH HASIL</h3><span id="splitChoiceText">Vocal & Instrumental</span></div>
+          <div class="options">
+            <button class="option active" data-split="vocal-instrumental"><strong>Vocal & Instrumental</strong><span>Dua file hasil</span></button>
+            <button class="option" data-split="vocal"><strong>Vocal Only</strong><span>Ambil vocal saja</span></button>
+            <button class="option" data-split="instrumental"><strong>Instrumental Only</strong><span>Hilangkan vocal</span></button>
+            <button class="option" data-split="stems"><strong>4 Stems</strong><span>Vocal, drum, bass, other</span></button>
+          </div>
+          <div class="control" style="margin-top:13px"><label>Output Format</label><select id="splitFormat"><option value="wav">WAV â€” PCM 16-bit / 48 kHz</option><option value="mp3">MP3 â€” 320 kbps</option></select></div>
+          <button class="submit" id="splitButton" disabled>Mulai Split Audio</button>
+        </div>
+      </section>
+    </section>
+  </main>
+  <footer>Â© 2026 TOOLS VOICE â€” by hana</footer>
+  <div class="toast" id="toast">Pilihan disimpan</div>
+  <script src="js/app.js"></script>
+</body>
+</html>
